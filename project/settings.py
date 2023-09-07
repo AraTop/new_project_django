@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'main',
-]
+    'django_filters',
+]   
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,7 +129,7 @@ LOGIN_REDIRECT_URL = '/users/profile/'
 LOGIN_URL = '/users/login/'
 LOGOUT_REDIRECT_URL = '/users/register/'
 
-SESSION_COOKIE_AGE = os.getenv('SESSION_COOKIE_AGE')
+SESSION_COOKIE_AGE = int(os.getenv('SESSION_COOKIE_AGE'))
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
