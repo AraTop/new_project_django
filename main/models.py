@@ -50,3 +50,17 @@ class Payment(models.Model):
       verbose_name = 'Платеж'
       verbose_name_plural = 'Платежы'
       ordering = ('user',)
+
+class CourseSubscription(models.Model):
+   user = models.ForeignKey(User, on_delete=models.CASCADE)
+   well = models.ForeignKey(Well, on_delete=models.CASCADE)
+   subscribed = models.BooleanField(default=True)
+
+   def __str__(self):
+      return f'{self.user} - {self.well}'
+   
+   class Meta:
+      unique_together = ('user', 'well')
+      verbose_name = 'Падписка'
+      verbose_name_plural = 'Падписки'
+      ordering = ('user',)
