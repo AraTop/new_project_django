@@ -25,7 +25,7 @@ class Lesson(models.Model):
    name = models.CharField(max_length=150 ,verbose_name='Название')
    description = models.TextField(verbose_name='Описание')
    preview = models.ImageField( verbose_name='Превью', **NULLABLE)
-   link_to_video = models.CharField(max_length=80, verbose_name='ссылка на видео', **NULLABLE)
+   link_to_video = models.CharField(max_length=80, verbose_name='ссылка на видео')
    well = models.ForeignKey(Well, on_delete=models.CASCADE, related_name='lessons')
 
    def __str__(self):
