@@ -6,3 +6,5 @@ python-dotenv
 django-filter
 djangorestframework-simplejwt
 pytest
+drf-yasg
+stripe

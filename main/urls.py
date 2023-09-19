@@ -18,4 +18,6 @@ urlpatterns = [
    path('create_subscription/', views.CourseSubscriptionView.as_view(), name='create_subscription'),
    path('delete_subscription/<int:well_id>/', views.CourseSubscriptionView.as_view(), name='delete_subscription'),
 
+   path('create_payment/<int:well_id>', views.create_payment, name='create_payment'),
+   path('retrieve_payment/<str:payment_intent_id>', views.retrieve_payment, name='ret'),
 ] + router.urls

@@ -1,4 +1,6 @@
+import datetime
 from rest_framework import viewsets, generics
+import stripe
 from main.models import CourseSubscription, Payment, Well, Lesson
 from main.paginators import LessonPaginator, WellPaginator
 from main.permissions import IsOwnerOrModerator, ModeratorPermission
@@ -9,6 +11,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.shortcuts import redirect, render
+
+from project import settings
 
 class WellViewSet(viewsets.ModelViewSet):
    serializer_class = WellSerializer
@@ -76,3 +81,45 @@ class CourseSubscriptionView(APIView):
          return Response({'error': 'Подписка не найдена'}, status=status.HTTP_404_NOT_FOUND)
       except Exception as e:
          return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+def retrieve_payment(request, payment_intent_id):
+   try:
+      payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+      payment_info = {
+         "id": payment_intent.id,
+         "amount": payment_intent.amount,
+         "currency": payment_intent.currency,
+      }
+      return render(request, 'main/retrieve_payment.html', {'payment_info': payment_info})
+   except stripe.error.StripeError as e:
+      print(f"Ошибка Stripe: {e}")
+      return None
+          
+def create_payment(request, well_id):
+   if request.method == 'POST':
+      amount = 1000   #$10.00
+      currency = 'usd'
+
+      try:
+         stripe.api_key = settings.STRIPE_SECRET_KEY
+         payment_intent = stripe.PaymentIntent.create(
+            amount=amount,
+            currency=currency)
+
+         payment_intent_id = payment_intent.id
+         well = Well.objects.get(pk=well_id)
+         payment = Payment(
+            user=request.user,  
+            payment_date=datetime.date.today(),
+            course_or_lesson=well,
+            amount=amount / 100,
+            payment_method='Stripe'
+         )
+         payment.save()
+         return redirect('main:ret', payment_intent_id=payment_intent_id)
+         #return render(request, 'main/create_payment.html', {'client_secret': payment_intent.client_secret})
+      
+      except stripe.error.StripeError as e:
+         print(f"Ошибка Stripe: {e}")
+
+   return render(request, 'main/create_payment.html') 

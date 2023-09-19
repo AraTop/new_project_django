@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'users',
     'main',
     'django_filters',
+    'drf_yasg'
 ] 
 
 MIDDLEWARE = [
@@ -139,6 +140,9 @@ SESSION_COOKIE_AGE = int(os.getenv('SESSION_COOKIE_AGE'))
 STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'users.User'
 TIME_ZONE = 'Europe/Moscow'
+
+STRIPE_SECRET_KEY = 'sk_test_51Ns3SDA9vCvQulBDaCKuGtIJtINVVFxVMDP6MKmlWYCKrbCIIor4Ok5LAOC7Q3p5WEoB5aUNgeigfkUWvpZzuuCy00s92X80X9'
+STRIPE_PUBLIC_KEY = 'pk_test_51Ns3SDA9vCvQulBDc4UcOiOoJwnMJC44F7LwH6VG9GznVfDt4jqPOuE6uREvQq28MK2XkG6ASh10P2xroAJZR9a300Zvcj89We'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
