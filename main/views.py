@@ -12,6 +12,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import redirect, render
+from main.tasks import send_update_email
 
 from project import settings
 
@@ -20,6 +21,15 @@ class WellViewSet(viewsets.ModelViewSet):
    queryset = Well.objects.all()
    pagination_class = WellPaginator
    permission_classes = [IsAuthenticated]
+
+   def perform_update(self, serializer):
+      instance = serializer.save()
+
+      user = self.request.user
+      user_email = user.email
+      
+      course_name = instance.name
+      send_update_email.delay(user_email, course_name)
 
 class LessonCreateAPIView(generics.CreateAPIView):
    serializer_class = LessonSerializer

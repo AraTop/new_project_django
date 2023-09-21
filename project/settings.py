@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'users',
     'main',
     'django_filters',
-    'drf_yasg'
+    'drf_yasg',
+    'django_celery_beat'
 ] 
 
 MIDDLEWARE = [
@@ -160,7 +161,24 @@ REST_FRAMEWORK = {
     ]
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.rambler.ru'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True 
+EMAIL_USE_TLS = False
+EMAIL_HOST_USER = 'test_django_project@rambler.ru'
+EMAIL_HOST_PASSWORD = 'Ara321ara' 
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+
+CELERY_BEAT_SCHEDULE = {
+    'task-name': {
+        'task': 'main.tasks.check_is_active',  
+        'schedule': timedelta(minutes=1),
+    },
 }

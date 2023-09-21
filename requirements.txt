@@ -6,5 +6,8 @@ python-dotenv
 django-filter
 djangorestframework-simplejwt
 pytest
-drf-yasg
+drf_yasg
 stripe
+celery
+redis
+django_celery_beat
