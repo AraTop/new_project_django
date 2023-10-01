@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, timezone
 import datetime
 from celery import shared_task
 from project import settings
@@ -7,9 +7,8 @@ from django.core.mail import send_mail
 
 @shared_task
 def check_is_active():
-   #inactive_period = timedelta(days=182)
-   inactive_period = timedelta(minutes=5)
-   cutoff_date = datetime.now() - inactive_period
+   inactive_period = timedelta(days=30)
+   cutoff_date = timezone.now() - inactive_period
    inactive_users = User.objects.filter(last_login=cutoff_date)
    
    for user in inactive_users:
