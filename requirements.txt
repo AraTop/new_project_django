@@ -11,3 +11,4 @@ stripe
 celery
 redis
 django_celery_beat
+dotenv
