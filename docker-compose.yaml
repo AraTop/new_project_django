@@ -8,6 +8,7 @@ services:
       - .env
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
+      #POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - '5435:5432'
   app:
@@ -17,7 +18,7 @@ services:
       - .env
     ports:
       - '8000:8000'
-    command: >
+    command: > #bash -c "python3 manage.py migrate"
       && python manage.py runserver 0.0.0.0:8000"
     depends_on:
       - db  
