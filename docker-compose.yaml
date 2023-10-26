@@ -13,7 +13,7 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
       #POSTGRES_HOST_AUTH_METHOD: trust
     ports:
-      - '5432:5432'
+      - '5435:5432'
   app:
     build:
       context: .
